@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // Retrieve the list item selector drawable using AppCompatResources
         val listSelector = AppCompatResources.getDrawable(this, R.drawable.list_item_selector)
         // Apply tint to the drawable
-        DrawableCompat.setTint(listSelector!!, resources.getColor(R.color.green, null))
+        DrawableCompat.setTint(listSelector!!, resources.getColor(R.color.darkgray, null))
         binding.listViewTasks.selector = listSelector
 
         // Set a click listener for the "Add" button using binding
