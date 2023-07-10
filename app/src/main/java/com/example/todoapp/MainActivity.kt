@@ -1,10 +1,8 @@
 package com.example.todoapp
 
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
+
 import android.widget.ArrayAdapter
-import android.widget.CheckedTextView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.databinding.ActivityMainBinding
@@ -15,11 +13,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tasks: ArrayList<String>
     private lateinit var adapter: ArrayAdapter<String>
-    private var selectedPositions: ArrayList<Int> = ArrayList()
 
-    companion object {
-        private const val STATE_SELECTED_POSITIONS = "selected_positions"
-    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
