@@ -2,7 +2,9 @@ package com.example.todoapp
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckedTextView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.databinding.ActivityMainBinding
@@ -13,40 +15,50 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tasks: ArrayList<String>
     private lateinit var adapter: ArrayAdapter<String>
+    private var selectedPositions: ArrayList<Int> = ArrayList()
+
+    companion object {
+        private const val STATE_SELECTED_POSITIONS = "selected_positions"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-            // Inflate the layout using data binding
-            binding = ActivityMainBinding.inflate(layoutInflater)
+        // Inflate the layout using data binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-            // Get the root view from the binding object
-            val view = binding.root
+        // Get the root view from the binding object
+        val view = binding.root
 
-            // Set the content view to the root view
-            setContentView(view)
+        // Set the content view to the root view
+        setContentView(view)
 
-            // Initialize the tasks list and adapter
-            tasks = ArrayList()
-            adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, tasks)
+        // Initialize the tasks list and adapter
+        tasks = ArrayList()
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_checked, tasks)
 
-            // Set the adapter to the ListView using binding
-            binding.listViewTasks.adapter = adapter
+        // Set the adapter to the ListView using binding
+        binding.listViewTasks.adapter = adapter
 
-            binding.listViewTasks.choiceMode = ListView.CHOICE_MODE_SINGLE
-            binding.listViewTasks.selector = getDrawable(list_item_selector)
+        //Set choice mode for ListView
+        binding.listViewTasks.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+
+        // Set the custom selector drawable to highlight the selected item
+        binding.listViewTasks.selector = getDrawable(list_item_selector)
 
 
-        // Set a click listener for the button using binding
-            binding.buttonAdd.setOnClickListener {
-                addTask()
-            }
-            binding.buttonClear.setOnClickListener {
-                clearTasks()
-            }
+        // Set a click listener for the "Add" button using binding
+        binding.buttonAdd.setOnClickListener {
+            addTask()
+        }
+         // Set a click listener for the "Clear" button using binding
+        binding.buttonClear.setOnClickListener {
+            clearTasks()
+        }
+        // Set a click listener for the "Delete" button using binding
+        binding.buttonDelete.setOnClickListener {
+            deleteSelectedTasks()
+        }
 
-            binding.buttonDelete.setOnClickListener {
-                deleteTask()
-            }
     }
     /**
      * Function to add a task to the list
@@ -71,7 +83,10 @@ class MainActivity : AppCompatActivity() {
      * Function to clear all tasks from the list
      */
     private fun clearTasks() {
+        // Clear the tasks list
         tasks.clear()
+
+        // Notify the adapter of the data change
         adapter.notifyDataSetChanged()
     }
 
@@ -79,13 +94,21 @@ class MainActivity : AppCompatActivity() {
     /**
      * Function to delete the selected task from the list
      */
-    private fun deleteTask() {
-        val selectedItem = binding.listViewTasks.checkedItemPosition
-        if (selectedItem != -1) {
-            tasks.removeAt(selectedItem)
-            adapter.notifyDataSetChanged()
-            binding.listViewTasks.clearChoices() // Clear the selection
+    private fun deleteSelectedTasks() {
+        val checkedPositions = binding.listViewTasks.checkedItemPositions
+
+        // Remove the selected items in reverse order
+        for (i in checkedPositions.size() - 1 downTo 0) {
+            val position = checkedPositions.keyAt(i)
+            if (checkedPositions.valueAt(i)) {
+                tasks.removeAt(position)
+            }
         }
+
+        // Clear the checked state and update the adapter
+        binding.listViewTasks.clearChoices()
+        adapter.notifyDataSetChanged()
     }
+
 
 }
