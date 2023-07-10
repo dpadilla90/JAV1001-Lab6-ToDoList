@@ -1,12 +1,12 @@
 package com.example.todoapp
 
 import android.os.Bundle
-
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.databinding.ActivityMainBinding
-import com.example.todoapp.R.drawable.list_item_selector
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,9 +38,11 @@ class MainActivity : AppCompatActivity() {
         //Set choice mode for ListView
         binding.listViewTasks.choiceMode = ListView.CHOICE_MODE_MULTIPLE
 
-        // Set the custom selector drawable to highlight the selected item
-        binding.listViewTasks.selector = getDrawable(list_item_selector)
-
+        // Retrieve the list item selector drawable using AppCompatResources
+        val listSelector = AppCompatResources.getDrawable(this, R.drawable.list_item_selector)
+        // Apply tint to the drawable
+        DrawableCompat.setTint(listSelector!!, resources.getColor(R.color.green, null))
+        binding.listViewTasks.selector = listSelector
 
         // Set a click listener for the "Add" button using binding
         binding.buttonAdd.setOnClickListener {
