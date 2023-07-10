@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ToDo App</string>
+    <string name="hint_text">Please enter a new task</string>
+    <string name="add_button">Add</string>
+    <string name="delete_button">Delete</string>
+    <string name="clear_button">Clear</string>
+</resources>
