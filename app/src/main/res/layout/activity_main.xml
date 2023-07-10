@@ -68,6 +68,7 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:choiceMode="singleChoice"/>
 
 </LinearLayout>
