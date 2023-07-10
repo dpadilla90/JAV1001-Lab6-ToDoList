@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tasks: ArrayList<String>
     private lateinit var adapter: ArrayAdapter<String>
 
+    companion object {
+        private const val STATE_TASKS = "tasks"
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +31,11 @@ class MainActivity : AppCompatActivity() {
         // Set the content view to the root view
         setContentView(view)
 
-        // Initialize the tasks list and adapter
-        tasks = ArrayList()
+        // Restore the tasks list if saved
+        tasks = savedInstanceState?.getStringArrayList(STATE_TASKS)?.toMutableList() as ArrayList<String>? ?: ArrayList()
+
+
+        // Initialize the adapter with the restored tasks list or an empty list
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_checked, tasks)
 
         // Set the adapter to the ListView using binding
@@ -57,6 +63,12 @@ class MainActivity : AppCompatActivity() {
             deleteSelectedTasks()
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save the tasks list to the bundle
+        outState.putStringArrayList(STATE_TASKS, tasks)
     }
     /**
      * Function to add a task to the list
